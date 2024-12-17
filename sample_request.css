@@ -235,6 +235,9 @@ input[type=password] {
 #donotemptycorpname {
     color: black;
 }
+#sendBySagawa {
+    color: black;
+}
 @media all {
 
     .zcwf_lblTopBottom .zcwf_col_lab,

@@ -17,7 +17,6 @@ const selectionPointId = 'COBJ1CF6'; // COBJ1CF6 採用ポイント
 const finColorNumId = 'COBJ1CF51'; // COBJ1CF51 ファインカラーサンプル帳　数量（冊）
 const noiesColorNumId = 'COBJ1CF52'; // COBJ1CF52 のイエスカラーサンプル帳　数量（冊）
 const propertyName = 'COBJ1CF13'; // COBJ1CF13 物件名
-const acceptancePointId = 'COBJ1CF6'; // COBJ1CF6 採用に際してのポイント
 const lastCheckId = 'privacyTool16871000002735104'; // privacyTool16871000002735104 当社プライバシーポリシー
 const sampleCheckId = 'COBJ1CF101'; // COBJ1CF101 サンプル着払い同意
 const formId = 'webform16871000002735104'; //フォームのID
@@ -99,11 +98,6 @@ $(document).ready(function(){
     // COBJ1CF6 採用ポイント
     selectToCheckBox(selectionPointId);
 
-    // acceptancePointId
-    $('input[name="' + acceptancePointId + '_checkbox"]').on('change blur', function (event) {
-        setValidateResult(acceptancePointId, !$('#' + acceptancePointId).is(':checked'));
-    });
-
     // lastCheckId 当社プライバシーポリシー
     $('#' + lastCheckId).on('change blur', function (event) {
         setValidateResult(lastCheckId, !$('#' + lastCheckId).is(':checked'));
@@ -126,9 +120,10 @@ $(document).ready(function(){
     });
 
     $('#' + formId).on('submit', function(event) {
-        $('input[name="' + acceptancePointId + '_checkbox"]').triggerHandler('blur');
         setValidateResult(lastCheckId, !$('#' + lastCheckId).is(':checked'));
         setValidateResult(sampleCheckId, !$('#' + sampleCheckId).is(':checked'));
+        setValidateResult(usePointId, !$('#' + usePointId).is(':checked'));
+        setValidateResult(selectionPointId, !$('#' + selectionPointId).is(':checked'));
         emptyCheckArray.forEach(
             emp => {
                 $('#' + emp).triggerHandler('blur');

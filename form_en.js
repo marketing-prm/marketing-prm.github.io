@@ -52,7 +52,7 @@ $(document).ready(function () {
         var org = $('#' + telephoneId).val();
         $('#' + telephoneId).val(toHalfWidth(org));
         // 書式チェック
-        const regex = /^(\+\d+\-)?\d{2,4}-\d{2,4}-\d{4}$/;
+        const regex = /^(\+?\d+\-)?\d{2,4}-\d{2,4}-\d{2,4}$/;
         setValidateResult(telephoneId, (org == '' || !regex.test(org)));
     });
 
