@@ -9,6 +9,8 @@ const postCodeId = 'CASECF5'; // CASECF20 郵便番号
 const addressId = 'CASECF8'; // CASECF8 ご住所
 const telephoneId = 'Phone'; // Phone 電話番号
 const inquiryId = 'CASECF3'; // CASECF3 問い合わせ内容
+const lastCheckId = 'privacyTool16871000002775576'; // privacyTool16871000002775576 当社プライバシーポリシー
+const formId = 'webform16871000002775576';
 
 function setValidateResult(name, isShow) {
     var inv = $('#' + name + 'Invalid');
@@ -50,8 +52,13 @@ $(document).ready(function () {
         var org = $('#' + telephoneId).val();
         $('#' + telephoneId).val(toHalfWidth(org));
         // 書式チェック
-        const regex = /^\d{2,4}-\d{2,4}-\d{4}$/;
+        const regex = /^(\+\d+\-)?\d{2,4}-\d{2,4}-\d{4}$/;
         setValidateResult(telephoneId, (org == '' || !regex.test(org)));
+    });
+
+    // lastCheckId 当社プライバシーポリシー
+    $('#' + lastCheckId).on('change blur', function (event) {
+        setValidateResult(lastCheckId, !$('#' + lastCheckId).is(':checked'));
     });
 
     // バリデーション確認処理
@@ -62,6 +69,27 @@ $(document).ready(function () {
         }, 500);
     });
 
+
+    $('#' + formId).on('submit', function(event) {
+        emptyCheckArray.forEach(
+            emp => {
+                $('#' + emp).triggerHandler('blur');
+            }
+        );
+        $('#' + emailId).triggerHandler('blur');
+        $('#' + telephoneId).triggerHandler('blur');
+        $('#' + companyId).triggerHandler('blur');
+        $('#' + lastCheckId).triggerHandler('blur');
+
+        if ($('.' + si).length != 0) {
+            event.preventDefault();
+
+            var $target = $('.' + si).first(); // 最初の要素を取得
+            $('html, body').animate({
+                scrollTop: $target.offset().top // 要素の位置にスクロール
+            }, 500); // 500msでスムーズにスクロール
+        }
+    });
 });
 function toHalfWidth(str) {
     // 全角英数字を半角に変換

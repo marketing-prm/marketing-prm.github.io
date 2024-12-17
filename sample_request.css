@@ -228,6 +228,13 @@ input[type=password] {
     font-size: small;
 }
 
+#cutsumplehelp {
+    color: red;
+}
+
+#donotemptycorpname {
+    color: black;
+}
 @media all {
 
     .zcwf_lblTopBottom .zcwf_col_lab,

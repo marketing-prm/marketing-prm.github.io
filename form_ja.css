@@ -190,6 +190,10 @@ input[type=password],
     font-size: small;
 }
 
+#donotemptycorpname {
+    color: black;
+}
+
 @media all {
 
     .zcwf_lblTopBottom .zcwf_col_lab,

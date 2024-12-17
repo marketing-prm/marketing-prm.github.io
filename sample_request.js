@@ -16,6 +16,11 @@ const usePointId = 'COBJ1CF15'; // COBJ1CF15 使用箇所
 const selectionPointId = 'COBJ1CF6'; // COBJ1CF6 採用ポイント
 const finColorNumId = 'COBJ1CF51'; // COBJ1CF51 ファインカラーサンプル帳　数量（冊）
 const noiesColorNumId = 'COBJ1CF52'; // COBJ1CF52 のイエスカラーサンプル帳　数量（冊）
+const propertyName = 'COBJ1CF13'; // COBJ1CF13 物件名
+const acceptancePointId = 'COBJ1CF6'; // COBJ1CF6 採用に際してのポイント
+const lastCheckId = 'privacyTool16871000002735104'; // privacyTool16871000002735104 当社プライバシーポリシー
+const sampleCheckId = 'COBJ1CF101'; // COBJ1CF101 サンプル着払い同意
+const formId = 'webform16871000002735104'; //フォームのID
 
 function setValidateResult(name, isShow)
 {
@@ -34,7 +39,7 @@ $(document).ready(function(){
     $('#' + requireDayId).val(td.getFullYear() + '/' + (td.getMonth() + 1).toString().padStart(2, '0') + '/' + td.getDate().toString().padStart(2, '0'));
 
     // 空白チェックの追加
-    var emptyCheckArray = [nameId, furiganaId, requireDayId, sectionId, positionId];
+    var emptyCheckArray = [nameId, furiganaId, requireDayId, sectionId, positionId, propertyName];
     // NAME お客様（漢字）
     // COBJ1CF9 お名前（フリガナ）
     emptyCheckArray.forEach(
@@ -67,7 +72,7 @@ $(document).ready(function(){
     // COBJ1CF2 郵便番号
     $('#' + postCodeId).on('change blur', function (event) {
         var org = $('#' + postCodeId).val();
-        $('#' + postCodeId).val(toHalfWidth(org));
+        $('#' + postCodeId).val(toHalfWidthNumOnly(org));
         checkEmpty(postCodeId);
     });
 
@@ -81,7 +86,7 @@ $(document).ready(function(){
     // COBJ1CF12 電話番号
     $('#' + telephoneId).on('change blur', function (event) {
         var org = $('#' + telephoneId).val();
-        $('#' + telephoneId).val(toHalfWidth(org));
+        $('#' + telephoneId).val(toHalfWidthNumOnly(org));
         // 書式チェック
         const regex = /^\d{2,4}-\d{2,4}-\d{4}$/;
         setValidateResult(telephoneId, (org == '' || !regex.test(org)));
@@ -93,7 +98,22 @@ $(document).ready(function(){
     selectToCheckBox(usePointId);
     // COBJ1CF6 採用ポイント
     selectToCheckBox(selectionPointId);
-    
+
+    // acceptancePointId
+    $('input[name="' + acceptancePointId + '_checkbox"]').on('change blur', function (event) {
+        setValidateResult(acceptancePointId, !$('#' + acceptancePointId).is(':checked'));
+    });
+
+    // lastCheckId 当社プライバシーポリシー
+    $('#' + lastCheckId).on('change blur', function (event) {
+        setValidateResult(lastCheckId, !$('#' + lastCheckId).is(':checked'));
+    });
+
+    // COBJ1CF101 サンプル着払い同意
+    $('#' + sampleCheckId).on('change blur', function (event) {
+        setValidateResult(sampleCheckId, !$('#' + sampleCheckId).is(':checked'));
+    });
+
     // フリガナ処理
     $.fn.autoKana('#' + nameId, '#' + furiganaId, {katakana:true});
 
@@ -103,6 +123,31 @@ $(document).ready(function(){
             var inv = $('.' + si);
             $('#formsubmit').prop('disabled', (inv.length != 0));
         }, 500);
+    });
+
+    $('#' + formId).on('submit', function(event) {
+        $('input[name="' + acceptancePointId + '_checkbox"]').triggerHandler('blur');
+        setValidateResult(lastCheckId, !$('#' + lastCheckId).is(':checked'));
+        setValidateResult(sampleCheckId, !$('#' + sampleCheckId).is(':checked'));
+        emptyCheckArray.forEach(
+            emp => {
+                $('#' + emp).triggerHandler('blur');
+            }
+        );
+        $('#' + emailId).triggerHandler('blur');
+        $('#' + postCodeId).triggerHandler('blur');
+        $('#' + addressId).triggerHandler('blur');
+        $('#' + telephoneId).triggerHandler('blur');
+        $('#' + companyId).triggerHandler('blur');
+
+        if ($('.' + si).length != 0) {
+            event.preventDefault();
+
+            var $target = $('.' + si).first(); // 最初の要素を取得
+            $('html, body').animate({
+                scrollTop: $target.offset().top // 要素の位置にスクロール
+            }, 500); // 500msでスムーズにスクロール
+        }
     });
 
     // type=numberの数値制御
@@ -116,6 +161,13 @@ $(document).ready(function(){
     });    
 });
 function toHalfWidth(str) {
+    // 全角英数字を半角に変換
+    str = str.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+    });
+    return str.replace(/[－―]/g, '-');
+}
+function toHalfWidthNumOnly(str) {
     // 全角英数字を半角に変換
     str = str.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
         return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
@@ -154,6 +206,7 @@ function kanaHalfToFull(str) {
 function selectOption(id, value, flg)
 {
     $("#" + id + " [value='" + value + "']").prop('selected', flg);
+    setValidateResult(id, $('input[name="' + id + '_checkbox"]:checked').length == 0);
 }
 
 function selectOptionAtRequireSample(id, value, flg, index)
