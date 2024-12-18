@@ -43,7 +43,6 @@ $(document).ready(function(){
     $('#' + emailId).on('change blur', function () {
         var email = $('#' + emailId).val();
         setValidateResult(emailId, (email == '' || !email.match(/.+@.+\..+/)));
-        checkEmpty(emailId);
     });
     
     // 企業団体名
@@ -83,7 +82,6 @@ $(document).ready(function(){
         // 書式チェック
         const regex = /^\d{2,4}-\d{2,4}-\d{4}$/;
         setValidateResult(telephoneId, (org == '' || !regex.test(org)));
-        checkEmpty(telephoneId);
     });
     
     // フリガナ処理
