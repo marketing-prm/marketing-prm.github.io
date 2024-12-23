@@ -11,6 +11,7 @@ const positionId = 'COBJ1CF14'; // COBJ1CF14 役職名
 const postCodeId = 'CASECF5'; // CASECF20 郵便番号
 const addressId = 'CASECF8'; // CASECF8 ご住所
 const telephoneId = 'Phone'; // Phone 電話番号
+const inquiryId = 'CASECF3'; // CASECF3 問い合わせ内容
 const lastCheckId = 'privacyTool16871000002735207'; // privacyTool16871000002735207 当社プライバシーポリシー
 const formId = 'webform16871000002735207';
 
@@ -31,7 +32,7 @@ $(document).ready(function(){
     $('#' + reqestDayId).val(td.getFullYear() + '/' + (td.getMonth() + 1).toString().padStart(2, '0') + '/' + td.getDate().toString().padStart(2, '0'));
 
     // 空白チェックの追加
-    var emptyCheckArray = [nameId, furiganaId, reqestDayId, sectionId, positionId];
+    var emptyCheckArray = [nameId, furiganaId, reqestDayId, sectionId, positionId, inquiryId];
     // お客様（漢字）
     // お名前（フリガナ）
     emptyCheckArray.forEach(

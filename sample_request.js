@@ -308,3 +308,4 @@ function selectToCheckBox(id){
     select.after(div);
     select.hide();
 }
+
