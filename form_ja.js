@@ -13,6 +13,7 @@ const addressId = 'CASECF8'; // CASECF8 ご住所
 const telephoneId = 'Phone'; // Phone 電話番号
 const inquiryId = 'CASECF3'; // CASECF3 問い合わせ内容
 const lastCheckId = 'privacyTool16871000002735207'; // privacyTool16871000002735207 当社プライバシーポリシー
+const industryTypeId = 'CASECF24'; // CASECF24 業界
 const formId = 'webform16871000002735207';
 
 function setValidateResult(name, isShow)
@@ -93,6 +94,11 @@ $(document).ready(function(){
         setValidateResult(lastCheckId, !$('#' + lastCheckId).is(':checked'));
     });
 
+    // industryTypeId 業界
+    $('#' + industryTypeId).on('change blur', function (event) {
+        setValidateResult(industryTypeId, $('#' + industryTypeId).val() == '-None-' || $('#' + industryTypeId).val() == '');
+    });
+
     // バリデーション確認処理
     $('input').on('change blur', function (event) {
         setTimeout(function() {
@@ -113,6 +119,7 @@ $(document).ready(function(){
         $('#' + telephoneId).triggerHandler('blur');
         $('#' + companyId).triggerHandler('blur');
         $('#' + lastCheckId).triggerHandler('blur');
+        $('#' + industryTypeId).triggerHandler('blur');
 
         if ($('.' + si).length != 0) {
             event.preventDefault();

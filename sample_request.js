@@ -19,6 +19,7 @@ const noiesColorNumId = 'COBJ1CF52'; // COBJ1CF52 のイエスカラーサンプ
 const propertyName = 'COBJ1CF13'; // COBJ1CF13 物件名
 const lastCheckId = 'privacyTool16871000002735104'; // privacyTool16871000002735104 当社プライバシーポリシー
 const sampleCheckId = 'COBJ1CF101'; // COBJ1CF101 サンプル着払い同意
+const industryTypeId = 'COBJ1CF155'; // COBJ1CF155 業界
 const formId = 'webform16871000002735104'; //フォームのID
 
 function setValidateResult(name, isShow)
@@ -108,8 +109,21 @@ $(document).ready(function(){
         setValidateResult(sampleCheckId, !$('#' + sampleCheckId).is(':checked'));
     });
 
+    // industryTypeId 業界
+    $('#' + industryTypeId).on('change blur', function (event) {
+        setValidateResult(industryTypeId, $('#' + industryTypeId).val() == '-None-' || $('#' + industryTypeId).val() == '');
+    });
+
     // フリガナ処理
     $.fn.autoKana('#' + nameId, '#' + furiganaId, {katakana:true});
+
+    // 半角英数字-のみ制限
+    $('input[type="text"][data-alphanumonly]').on('change blur', function (event) {
+        var org = $(this).val();
+        $(this).val(toHalfWidthNumOnly(org));
+        //　半角英数字ハイフン以外が含まれている場合はエラー
+        setValidateResult($(this).attr('id'), !(org == "" || org.match(/^[a-zA-Z0-9\-]+$/)));
+    }); 
 
     // バリデーション確認処理
     $('input').on('change blur', function (event) {
@@ -134,6 +148,7 @@ $(document).ready(function(){
         $('#' + addressId).triggerHandler('blur');
         $('#' + telephoneId).triggerHandler('blur');
         $('#' + companyId).triggerHandler('blur');
+        $('#' + industryTypeId).triggerHandler('blur');
 
         if ($('.' + si).length != 0) {
             event.preventDefault();
