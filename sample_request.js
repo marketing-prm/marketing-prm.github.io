@@ -20,7 +20,9 @@ const propertyName = 'COBJ1CF13'; // COBJ1CF13 物件名
 const lastCheckId = 'privacyTool16871000002735104'; // privacyTool16871000002735104 当社プライバシーポリシー
 const sampleCheckId = 'COBJ1CF101'; // COBJ1CF101 サンプル着払い同意
 const industryTypeId = 'COBJ1CF155'; // COBJ1CF155 業界
+const requirePurposId = 'COBJ1CF17'; // COBJ1CF17 サンプル請求目的
 const formId = 'webform16871000002735104'; //フォームのID
+
 
 function setValidateResult(name, isShow)
 {
@@ -114,6 +116,11 @@ $(document).ready(function(){
         setValidateResult(industryTypeId, $('#' + industryTypeId).val() == '-None-' || $('#' + industryTypeId).val() == '');
     });
 
+    // requirePurposId サンプル請求目的
+    $('#' + requirePurposId).on('change blur', function (event) {
+        setValidateResult(requirePurposId, $('#' + requirePurposId).val() == '-None-' || $('#' + requirePurposId).val() == '');
+    });
+
     // フリガナ処理
     $.fn.autoKana('#' + nameId, '#' + furiganaId, {katakana:true});
 
@@ -135,13 +142,17 @@ $(document).ready(function(){
 
     $('#' + formId).on('submit', function(event) {
         setValidateResult(lastCheckId, !$('#' + lastCheckId).is(':checked'));
+        setValidateResult(sampleCheckId, !$('input[name="' + sampleCheckId + '_checkbox"]:checked').length);
+        setValidateResult(selectionPointId, !$('input[name="' + selectionPointId + '_checkbox"]:checked').length);
+        setValidateResult(wantSampleId, !$('input[name="' + wantSampleId + '_checkbox"]:checked').length);
+        setValidateResult(usePointId, !$('input[name="' + usePointId + '_checkbox"]:checked').length);
         emptyCheckArray.forEach(
             emp => {
                 $('#' + emp).triggerHandler('blur');
             }
         );
         $('#' + selectionPointId + '_checkbox_0').triggerHandler('blur');
-        $('#' + sampleCheckId + '_checkbox_0').triggerHandler('blur');
+        $('#' + sampleCheckId).triggerHandler('blur');
         $('#' + usePointId + '_checkbox_0').triggerHandler('blur');
         $('#' + emailId).triggerHandler('blur');
         $('#' + postCodeId).triggerHandler('blur');
@@ -149,6 +160,7 @@ $(document).ready(function(){
         $('#' + telephoneId).triggerHandler('blur');
         $('#' + companyId).triggerHandler('blur');
         $('#' + industryTypeId).triggerHandler('blur');
+        $('#' + requirePurposId).triggerHandler('blur');
 
         if ($('.' + si).length != 0) {
             event.preventDefault();
