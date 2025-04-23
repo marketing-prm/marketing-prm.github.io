@@ -48,14 +48,7 @@ $(document).ready(function () {
         checkEmpty(companyId);
     });
 
-    // COBJ1CF12 電話番号
-    $('#' + telephoneId).on('change blur', function (event) {
-        var org = $('#' + telephoneId).val();
-        $('#' + telephoneId).val(toHalfWidth(org));
-        // 書式チェック
-        const regex = /^(\+?\d+\-)?\d{2,4}-\d{2,4}-\d{2,4}$/;
-        setValidateResult(telephoneId, (org == '' || !regex.test(org)));
-    });
+    // COBJ1CF12 電話番号チェック削除
 
     // lastCheckId 当社プライバシーポリシー
     $('#' + lastCheckId).on('change blur', function (event) {
@@ -78,7 +71,6 @@ $(document).ready(function () {
             }
         );
         $('#' + emailId).triggerHandler('blur');
-        $('#' + telephoneId).triggerHandler('blur');
         $('#' + companyId).triggerHandler('blur');
         $('#' + lastCheckId).triggerHandler('blur');
 
@@ -139,8 +131,8 @@ function validateDateFormat16871000002775576() {
 }
 
 function checkMandatory16871000002775576() {
-    var mndFileds = new Array('Subject', 'Email', 'Phone', 'CASECF3', 'CASECF18', 'CASECF20');
-    var fldLangVal = new Array('Subject', 'Email\x20Address', 'Telephone\x20Number', 'Your\x20Inquiry', 'Name', 'Campany\x20Name');
+    var mndFileds = new Array('Subject', 'Email', 'CASECF3', 'CASECF18', 'CASECF20');
+    var fldLangVal = new Array('Subject', 'Email\x20Address', 'Your\x20Inquiry', 'Name', 'Campany\x20Name');
     for (i = 0; i < mndFileds.length; i++) {
         var fieldObj = document.forms['WebToCases16871000002775576'][mndFileds[i]];
         if (fieldObj) {
